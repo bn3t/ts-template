@@ -1,0 +1,55 @@
+{
+  "name": "ts-template",
+  "version": "0.0.1",
+  "description": "A template for typescript projects",
+  "main": "build/main.js",
+  "scripts": {
+    "clean": "rimraf build coverage node_modules junit.xml",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "build": "npm run lint && npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly -p ./tsconfig-prod.json",
+    "build:js": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps inline --ignore \"src/**/*.spec.ts\",\"src/**/*.test.ts\"",
+    "lint": "eslint --ext ts,js --fix src",
+    "test": "jest --watchAll",
+    "test:ci": "jest --coverage",
+    "ncu": "ncu -u",
+    "preversion": "npm run build && npm run test:ci",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+  },
+  "author": "You",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "conventional-changelog-cli": "^2.2.2",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.1",
+    "jest-junit": "^13.1.0",
+    "npm-check-updates": "^12.5.9",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  },
+  "jest": {
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
+    "coverageReporters": [
+      "html",
+      "text",
+      "text-summary",
+      "cobertura"
+    ]
+  }
+}
