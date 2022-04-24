@@ -1,3 +1,5 @@
 const helloWorld = () => "Hello, world!";
 
-export { helloWorld };
+const helloWorldAsync = async () => "Hello, async world!";
+
+export { helloWorld, helloWorldAsync };
