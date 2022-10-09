@@ -19,7 +19,7 @@
     "test": "jest --watch",
     "type-check:watch": "npm run type-check -- --watch",
     "type-check": "tsc --noEmit",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+    "version": "standard-version --skip.tag --tag-prefix ''"
   },
   "author": "You",
   "license": "MIT",

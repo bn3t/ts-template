@@ -4,6 +4,8 @@ stages:
   - build
   - test
   - deploy
+  - "release"
+  - publish
 
 build:
   stage: build
@@ -11,6 +13,7 @@ build:
     - npm ci
     - npm run build
   cache:
+    key: node-modules-$CI_COMMIT_REF_SLUG
     paths:
       - node_modules/
   artifacts:
@@ -28,8 +31,9 @@ test:
   script:
     - npm run test:ci
   cache:
+    key: node-modules-$CI_COMMIT_REF_SLUG
     paths:
-      - coverage/
+      - node_modules/
   artifacts:
     paths:
       - coverage/
@@ -54,3 +58,68 @@ pages:
       - public
   only:
     - master
+
+changelog:
+  stage: release
+  only:
+    - master
+  cache:
+    key: node-modules-$CI_COMMIT_REF_SLUG
+    paths:
+      - node_modules/
+  artifacts:
+    when: on_success
+    paths:
+      - RELEASE_NOTES.md
+      - package.json
+      - package-lock.json
+    reports:
+      dotenv: build.env
+  before_script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$GIT_SSH_PRIV_KEY")
+    - mkdir -p ~/.ssh
+    - ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    - git config --global user.name "${GITLAB_USER_NAME}"
+  script:
+    - git remote rm origin && git remote add origin git@gitlab.com:$CI_PROJECT_PATH.git
+    - git pull origin $CI_COMMIT_REF_NAME
+    - |-
+      if [ "$RELEASE_AS" != "" ]; then
+        npm run version -- --release-as $RELEASE_AS
+      else 
+        npm run version
+      fi
+    - echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> build.env
+    - git push -o ci.skip origin HEAD:$CI_COMMIT_REF_NAME # Pushes to the same branch as the trigger
+    - diff --changed-group-format='%>' --unchanged-group-format='' <( git show HEAD~1:CHANGELOG.md ) CHANGELOG.md > RELEASE_NOTES.md || true
+
+release_job:
+  only:
+    - master
+  needs: ["changelog"]
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - echo $PACKAGE_VERSION
+  release:
+    tag_name: $PACKAGE_VERSION
+    name: "Release $PACKAGE_VERSION"
+    description: RELEASE_NOTES.md
+
+publish:
+  when: manual
+  only:
+    - master
+  stage: publish
+  dependencies:
+    - build
+    - changelog
+  interruptible: false
+  retry: 1
+  script:
+    - npm config set -- '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
+    - head package.json
+    - npm publish --access public
