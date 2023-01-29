@@ -21,7 +21,7 @@
   "ignorePatterns": [
     ".eslintrc.js",
     "prettier.config.js",
-    "babel.config.js"
+    "vitest.config.ts"
   ],
   "rules": {}
 }

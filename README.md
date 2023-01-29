@@ -2,9 +2,9 @@
 
 ## Features
 
-- Babel based transpiling
+- Tsup / esbuild based transpilation
 - ESLint support
-- Jest tests
+- Vitest tests
 - Coverage support for tests
 - Prettier integration (+ ESLint)
 - Gitlab CI

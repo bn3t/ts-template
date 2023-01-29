@@ -1,4 +1,6 @@
-import { helloWorld, helloWorldAsync, MyClass } from ".";
+#!/usr/bin/env node
+
+import { helloWorld, helloWorldAsync, MyClass } from "./index.js";
 
 console.log(helloWorld());
 
