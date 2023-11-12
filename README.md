@@ -27,3 +27,20 @@ Put this in .vscode/settings.json
     },
 }
 ```
+
+# GitHub Actions CI Notes
+
+To add windows support in the build
+
+```yml
+windows:
+  runs-on: windows-latest
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 20
+    - run: npm install -g npm@10
+    - run: npm ci
+    - run: npm run test
+```
