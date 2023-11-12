@@ -32,7 +32,7 @@ Put this in .vscode/settings.json
 
 To add windows support in the build
 
-```yml
+```yaml
 windows:
   runs-on: windows-latest
   steps:
@@ -43,4 +43,13 @@ windows:
     - run: npm install -g npm@10
     - run: npm ci
     - run: npm run test
+```
+
+To add npm publish to release-please:
+
+```yaml
+- run: npm publish
+  env:
+    NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  if: ${{ steps.release.outputs.release_created }}
 ```
