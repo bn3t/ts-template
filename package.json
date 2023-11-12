@@ -1,6 +1,6 @@
 {
   "name": "@bn3t/ts-template",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "type": "module",
   "description": "A template for typescript projects",
   "main": "dist/index.cjs",
