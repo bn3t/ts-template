@@ -11,6 +11,13 @@
 - Npm check update `npm run ncu`
 - Conventional commits releasing (experimental)
 
+## Use with bun
+
+### Bun based scripts
+
+- npm run bun:dev # Run the dev version (ts) in bun
+- 
+
 ## Visual Studio Code configuration
 
 Put this in .vscode/settings.json
