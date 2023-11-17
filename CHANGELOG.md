@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.1](https://github.com/bn3t/ts-template/compare/v0.1.0...v0.1.1) (2023-11-17)
+
+
+### Features
+
+* Add run scripts for bun ([6ad76f1](https://github.com/bn3t/ts-template/commit/6ad76f190d1eddde2aa5ddbbef462cf0aa39545b))
+
 ## 0.1.0 (2023-11-12)
 
 
