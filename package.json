@@ -11,41 +11,43 @@
     "dist"
   ],
   "scripts": {
-    "build:check": "tsc -p ./tsconfig.json",
-    "build:js": "tsup --entry src/main.ts --entry src/index.ts --format cjs,esm --dts --sourcemap",
+    "build:check": "tsc --noEmit",
+    "build:js": "tsup-node --entry src/main.ts --entry src/index.ts --format cjs,esm --dts --sourcemap",
+    "bun:build:js": "bun build ./src/main.ts ./src/index.ts --outdir=dist --target=node --sourcemap=external --external='*'",
+    "bun:build:bun": "bun build ./src/main.ts --outdir=dist-bun --target=bun --sourcemap",
+    "bun:build:bun-exe": "bun build ./src/main.ts --compile --outfile ./dist-bun/main",
     "build": "npm run lint && npm run build:check && npm run build:js",
-    "clean": "rimraf build dist coverage node_modules junit.xml",
+    "bun:build": "npm run lint && tsc --declaration --emitDeclarationOnly && bun run bun:build:js && bun run bun:build:bun",
+    "clean": "rimraf build dist dist-bun coverage node_modules junit.xml",
     "dev": "ts-node-esm src/main.ts",
     "lint": "eslint --ext mts,cts,ts,js src",
     "lint:fix": "eslint --ext mts,cts,ts,js --fix src",
     "ncu": "ncu -u",
-    "preversion": "npm run build && npm run test:ci",
     "start": "node dist/main.js",
     "test:ci": "vitest run --coverage",
-    "test": "vitest ",
-    "type-check:watch": "npm run type-check -- --watch",
-    "type-check": "tsc --noEmit",
-    "version": "standard-version --skip.tag --tag-prefix ''"
+    "test": "vitest"
   },
   "author": "You",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.8",
+    "@types/yargs": "^17.0.31",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "@vitest/coverage-c8": "^0.28.3",
     "@vitest/coverage-v8": "^0.34.6",
-    "conventional-changelog-cli": "^4.1.0",
     "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "npm-check-updates": "^16.14.6",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
-    "standard-version": "^9.5.0",
     "ts-node": "^10.9.1",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
   }
 }
