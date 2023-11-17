@@ -15,6 +15,7 @@
     "build:js": "tsup-node --entry src/main.ts --entry src/index.ts --format cjs,esm --dts --sourcemap",
     "bun:build:js": "bun build ./src/main.ts ./src/index.ts --outdir=dist --target=node --sourcemap=external --external='*'",
     "bun:build:bun": "bun build ./src/main.ts --outdir=dist-bun --target=bun --sourcemap",
+    "bun:build:bun-exe": "bun build ./src/main.ts --compile --outfile ./dist-bun/main",
     "build": "npm run lint && npm run build:check && npm run build:js",
     "bun:build": "npm run lint && tsc --declaration --emitDeclarationOnly && bun run bun:build:js && bun run bun:build:bun",
     "clean": "rimraf build dist dist-bun coverage node_modules junit.xml",
