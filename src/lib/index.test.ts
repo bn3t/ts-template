@@ -1,4 +1,4 @@
-import { helloWorld, helloWorldAsync, MyClass } from "./index.js";
+import { helloWorld, helloWorldAsync, MyClass } from ".";
 
 describe("Test index.ts", () => {
   it("should be Hello, world!", () => {

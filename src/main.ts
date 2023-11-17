@@ -3,7 +3,7 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import { helloWorld, helloWorldAsync, MyClass } from "./index.js";
+import { helloWorld, helloWorldAsync, MyClass } from "@/lib";
 
 const test = () => {
   console.log(helloWorld());
